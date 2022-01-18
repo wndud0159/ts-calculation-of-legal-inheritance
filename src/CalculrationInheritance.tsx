@@ -118,12 +118,16 @@ export default function InheritanceCalculration() {
       alert("상속인은 적어도 1명 이상의 상속인을 입력해야 합니다.");
       return;
     }
-    calculationOfLegalInheritance();
+    // calculationOfLegalInheritance();
     setIsResult((prev) => true);
     resultRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const calculationOfLegalInheritance = () => {
+  useEffect(() => {
+    // if (!shareValue.value) {
+    //   return;
+    // }
+
     if (isSpouse) {
       const divisionValue = parseInt(shareValue.value) * 2 + 3;
       const spouseResult = Math.round((parseInt(price) / divisionValue) * 3);
@@ -154,7 +158,8 @@ export default function InheritanceCalculration() {
         value: `각 금 ${converterPrice(result.toString())}원`,
       }));
     }
-  };
+    console.log("result value: ", resultValue.value);
+  }, [shareValue, isSpouse]);
 
   const removeResultHandler = useCallback(() => {
     setPrice((prev) => "");
@@ -290,8 +295,8 @@ export default function InheritanceCalculration() {
             <div className=" mb-8">
               <div className="mb-2">{spuseValue.title}</div>
               <div className="flex rounded py-2 px-2.5 bg-[#F8FBFA] border border-[rgba(0,0,0,0.1)] ">
-                <div className=" mr-11">{spuseValue.rate}</div>
-                <div>{spuseValue.value}</div>
+                <div className=" mr-11">{spuseValue.rate === "3/NaN" ? "" : spuseValue.rate}</div>
+                <div>{spuseValue.value === "금 NaN원" ? "" : spuseValue.value}</div>
               </div>
             </div>
           )}
@@ -299,8 +304,8 @@ export default function InheritanceCalculration() {
           <div className="">
             <div className="mb-2">{resultValue.title}</div>
             <div className="flex rounded py-2 px-2.5 bg-[#F8FBFA] border border-[rgba(0,0,0,0.1)] ">
-              <div className=" mr-6">{resultValue.rate}</div>
-              <div>{resultValue.value}</div>
+              <div className=" mr-6">{resultValue.rate === "각 NaN/NaN" || resultValue.rate === "각 1/" ? "" : resultValue.rate}</div>
+              <div>{resultValue.value === "각 금 NaN원" ? "" : resultValue.value}</div>
             </div>
           </div>
           <div className="flex py-6">
